@@ -129,10 +129,4 @@ public class GameManager : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinRoom(info.Name);
         MenuManager.Instance.OpenMenu("loading");
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }

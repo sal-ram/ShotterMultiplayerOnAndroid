@@ -5,7 +5,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
-public class PlayerController : MonoBehaviourPunCallbacks, IDamagable
+public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 {
     private float inputVertical;
     private float inputHorizontal;
@@ -19,6 +19,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamagable
 
 
     PhotonView PV;
+
+    PlayerManager playerManager;
+
+    const float maxHealth = 150f;
+    float currentHealth = maxHealth;
     private void Awake()
     {
         PV = GetComponent<PhotonView>();
@@ -38,6 +43,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamagable
             Destroy(GetComponentInChildren<Camera>().gameObject);
             Destroy(GetComponentInChildren<PlayerGravityController>().gameObject);
         }
+
+        playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
     }
 
     // Update is called once per frame
@@ -126,6 +133,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamagable
             PhotonNetwork.SetPlayerCustomProperties(hash);
         }
 
+        //Fire
         if (Input.GetMouseButtonDown(0))
         {
             gunObj.Attack(index);
@@ -148,9 +156,19 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamagable
     [PunRPC]
     void RPC_TakeDamage(float damage)
     {
-        if (PV.IsMine)
+        if (!PV.IsMine)
+            return;
+        currentHealth -= damage;
+
+        if (currentHealth <= 0)
         {
-            Debug.Log("took damage: " + damage);
+            Die();
         }
+        
+    }
+
+    void Die()
+    {
+        playerManager.Die();
     }
 }

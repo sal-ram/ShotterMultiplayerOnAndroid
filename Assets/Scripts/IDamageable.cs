@@ -1,4 +1,4 @@
-interface IDamagable
+interface IDamageable
 {
     void TakeDamage(float damage);
 }
