@@ -10,7 +10,8 @@ public class PlayerBodyMovement : MonoBehaviour
 
     public void MoveBody(float vertical, float horizontal)
     {
-        Vector3 moveCoordinate = transform.forward * vertical + transform.right * horizontal;
+        Debug.Log("Here");
+        Vector3 moveCoordinate = transform.right * vertical + transform.forward * horizontal;
         controller.Move(moveCoordinate * Time.deltaTime * speedMovement);
     }
 
