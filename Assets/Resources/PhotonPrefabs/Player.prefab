@@ -525,6 +525,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 8c2a29e0-ce02-47d2-9a63-a54c442d5419
     m_ActionName: Player/Jump[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 372c5d7c-e08c-4882-8990-7a67fbe4b116
+    m_ActionName: Player/ChangeWeapon
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

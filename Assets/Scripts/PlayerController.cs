@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     // Start is called before the first frame update
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.lockState = CursorLockMode.Locked;
 
         if (PV.IsMine)
         {
@@ -93,38 +93,41 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     {
         if (playerInput.actions["Jump"].triggered)
         {
-            Debug.Log(1);
+            Debug.Log("Jump");
             bodyObj.Jump();
         }
     }
 
     void GunFunctionality()
     {
-        /*//Equip gun by numbers
+        //Equip gun by numbers
         int massOfGunsLength = gunObj.transform.childCount;
 
-        for (int i = 0; i < massOfGunsLength; i++)
+        /*for (int i = 0; i < massOfGunsLength; i++)
         {
             if (Input.GetKeyDown((i + 1).ToString()))
             {
                 gunObj.Equip(i);
             }
-        }
+        }*/
 
         //Switch Gun by Mouse ScrollWheel
         int index = gunObj.itemIndex;
 
-        if (Input.GetAxisRaw("Mouse ScrollWheel") > 0f)
+        if (playerInput.actions["ChangeWeapon"].triggered)
         {
             if (index >= massOfGunsLength - 1)
             {
                 gunObj.Equip(0);
             }
             else
+            {
                 gunObj.Equip(index + 1);
 
+            }
+
         }
-        else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f)
+       /* else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f)
         {
             if (index <= 0)
             {
@@ -132,7 +135,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             }
             else
                 gunObj.Equip(index - 1);
-        }
+        }*/
 
         //Synchronize switching weapons
         if (PV.IsMine)
@@ -143,10 +146,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         }
 
         //Fire
-        if (Input.GetMouseButtonDown(0))
+        if (playerInput.actions["Fire"].triggered)
         {
+            Debug.Log("Fire");
             gunObj.Attack(index);
-        }*/
+        }
     }
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
