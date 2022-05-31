@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Photon.Pun;
 using Photon.Realtime;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 {
+    private PlayerInput playerInput;
+
     private float inputVertical;
     private float inputHorizontal;
 
@@ -17,7 +20,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     [SerializeField] private PlayerLookMovement lookObj;
     [SerializeField] private PlayerWeapon gunObj;
 
-
     PhotonView PV;
 
     PlayerManager playerManager;
@@ -26,6 +28,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     float currentHealth = maxHealth;
     private void Awake()
     {
+        playerInput = GetComponent<PlayerInput>();
         PV = GetComponent<PhotonView>();
     }
 
@@ -66,23 +69,29 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     void Look()
     {
-        inputVerticalRot = Input.GetAxis("Mouse Y");
-        inputHorizontalRot = Input.GetAxis("Mouse X");
+        /*inputVerticalRot = Input.GetAxis("Mouse Y");
+        inputHorizontalRot = Input.GetAxis("Mouse X");*/
+        Vector2 a = playerInput.actions["Look"].ReadValue<Vector2>();
 
-        lookObj.MoveLookByMouse(inputVerticalRot, inputHorizontalRot);
+        Debug.Log(a);
+
+        lookObj.MoveLookByMouse(a.y, a.x);
     }
 
     void Move()
     {
-        inputVertical = Input.GetAxis("Vertical");
-        inputHorizontal = Input.GetAxis("Horizontal");
+        Vector2 input = playerInput.actions["Move"].ReadValue<Vector2>();
+        Vector3 move = new Vector3(input.x, 0, input.y);
 
-        bodyObj.MoveBody(inputVertical, inputHorizontal);
+       /* inputVertical = Input.GetAxis("Vertical");
+        inputHorizontal = Input.GetAxis("Horizontal");*/
+
+        bodyObj.MoveBody(move.x, move.z);
     }
 
     void Jump()
     {
-        if (Input.GetButtonDown("Jump"))
+        if (playerInput.actions["Jump"].triggered)
         {
             Debug.Log(1);
             bodyObj.Jump();
@@ -91,7 +100,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     void GunFunctionality()
     {
-        //Equip gun by numbers
+        /*//Equip gun by numbers
         int massOfGunsLength = gunObj.transform.childCount;
 
         for (int i = 0; i < massOfGunsLength; i++)
@@ -137,7 +146,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         if (Input.GetMouseButtonDown(0))
         {
             gunObj.Attack(index);
-        }
+        }*/
     }
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
