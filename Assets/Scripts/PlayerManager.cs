@@ -10,8 +10,11 @@ public class PlayerManager : MonoBehaviour
 
     GameObject controller;
 
-    SpawnManager spawnManager; 
-    
+    SpawnManager spawnManager;
+
+    public int player_kills { get; set; } = 0;
+    public int player_deaths { get; set; } = 0;
+
     // Start is called before the first frame update
 
     private void Awake()
@@ -37,13 +40,23 @@ public class PlayerManager : MonoBehaviour
         Vector3 position = SpawnManager.Instance.GetSpawnPoint().position;
         Quaternion rotation = SpawnManager.Instance.GetSpawnPoint().rotation;
 
-        controller =  PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Player"), position, rotation, 0, new object[] { PV.ViewID });
+        controller = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Player"), position, rotation, 0, new object[] { PV.ViewID });
     }
 
     public void Die()
     {
+        AddDeath();
         PhotonNetwork.Destroy(controller.gameObject);
         CreateController();
     }
 
+    public void AddKill()
+    {
+        player_kills += 1;
+    }
+
+    public void AddDeath()
+    {
+        player_deaths += 1;
+    }
 }

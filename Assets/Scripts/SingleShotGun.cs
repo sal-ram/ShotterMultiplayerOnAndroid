@@ -24,6 +24,16 @@ public class SingleShotGun : Gun
         ray.origin = cam.transform.position;
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
+           if (hit.collider.gameObject.GetComponent<PlayerController>()?.currentHealth <= ((GunInfo)itemInfo).damage)
+           {
+                //Debug.Log(hit.collider.gameObject.GetComponent<PlayerController>().currentHealth);
+
+                if (PV.IsMine)
+                {
+                   transform.root.gameObject.GetComponent<PlayerController>().AddKill();
+                }
+           }
+
             hit.collider.gameObject.GetComponent<IDamageable>()?.TakeDamage(((GunInfo)itemInfo).damage);
             PV.RPC("RPC_Shoot", RpcTarget.All, hit.point, hit.normal);
         }

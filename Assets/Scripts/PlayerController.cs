@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     PlayerManager playerManager;
 
     const float maxHealth = 150f;
-    float currentHealth = maxHealth;
+    public float currentHealth { get; private set; } = maxHealth;
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
@@ -59,11 +59,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             Look();
             Jump();
             GunFunctionality();
-
-            /*if (Input.GetButtonDown("Fire1"))
-            {
-                gunObj.ShotBullet();
-            }*/
         }
     }
 
@@ -73,7 +68,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         inputHorizontalRot = Input.GetAxis("Mouse X");*/
         Vector2 a = playerInput.actions["Look"].ReadValue<Vector2>();
 
-        Debug.Log(a);
+        //Debug.Log(a);
 
         lookObj.MoveLookByMouse(a.y, a.x);
     }
@@ -93,7 +88,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     {
         if (playerInput.actions["Jump"].triggered)
         {
-            Debug.Log("Jump");
+            //Debug.Log("Jump");
             bodyObj.Jump();
         }
     }
@@ -148,7 +143,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         //Fire
         if (playerInput.actions["Fire"].triggered)
         {
-            Debug.Log("Fire");
+            //Debug.Log("Fire");
             gunObj.Attack(index);
         }
     }
@@ -177,11 +172,20 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         {
             Die();
         }
-        
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("В меня попали");
     }
 
     void Die()
     {
         playerManager.Die();
+    }
+
+    public void AddKill()
+    {
+        playerManager.AddKill();
     }
 }
