@@ -50,5 +50,4 @@ public class SingleShotGun : Gun
             bulletImp.transform.SetParent(colliders[0].transform);
         }
     }
-
 }

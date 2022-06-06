@@ -8,13 +8,15 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 {
-    private PlayerInput playerInput;
+    private MultiplayerShooter playerInput;
 
     private float inputVertical;
     private float inputHorizontal;
 
     private float inputVerticalRot;
     private float inputHorizontalRot;
+
+    Hashtable hash;
 
     [SerializeField] private PlayerBodyMovement bodyObj;
     [SerializeField] private PlayerLookMovement lookObj;
@@ -24,12 +26,24 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     PlayerManager playerManager;
 
+    PlayerStatisticSystem playerStatisticSystem;
+
     const float maxHealth = 150f;
     public float currentHealth { get; private set; } = maxHealth;
     private void Awake()
     {
-        playerInput = GetComponent<PlayerInput>();
+        playerInput = new MultiplayerShooter();
         PV = GetComponent<PhotonView>();
+    }
+
+    public override void OnEnable()
+    {
+        playerInput.Enable();
+    }
+
+    public override void OnDisable()
+    {
+        playerInput.Disable();
     }
 
     // Start is called before the first frame update
@@ -40,14 +54,21 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         if (PV.IsMine)
         {
             gunObj.Equip(0);
+            
         }
         else
         {
             Destroy(GetComponentInChildren<Camera>().gameObject);
             Destroy(GetComponentInChildren<PlayerGravityController>().gameObject);
+            //Destroy(GetComponentInChildren<Canvas>().gameObject);
         }
 
         playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
+        
+        playerStatisticSystem = FindObjectOfType<PlayerStatisticSystem>();
+
+        //hash = new Hashtable();
+        //hash.Add("playerManager", (int)PV.InstantiationData[0]);
     }
 
     // Update is called once per frame
@@ -59,6 +80,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             Look();
             Jump();
             GunFunctionality();
+
+            /*if (playerInput.actions["Scoreboard"].triggered)
+            {
+                playerStatisticSystem.e
+            }*/
         }
     }
 
@@ -66,7 +92,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     {
         /*inputVerticalRot = Input.GetAxis("Mouse Y");
         inputHorizontalRot = Input.GetAxis("Mouse X");*/
-        Vector2 a = playerInput.actions["Look"].ReadValue<Vector2>();
+        Vector2 a = playerInput.Player.Look.ReadValue<Vector2>();
 
         //Debug.Log(a);
 
@@ -75,20 +101,21 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     void Move()
     {
-        Vector2 input = playerInput.actions["Move"].ReadValue<Vector2>();
+        // Vector2 input = playerInput.actions["Move"].ReadValue<Vector2>();
+        Vector2 input = playerInput.Player.Move.ReadValue<Vector2>();
         Vector3 move = new Vector3(input.x, 0, input.y);
 
-       /* inputVertical = Input.GetAxis("Vertical");
-        inputHorizontal = Input.GetAxis("Horizontal");*/
-
+        /* inputVertical = Input.GetAxis("Vertical");
+         inputHorizontal = Input.GetAxis("Horizontal");*/
+        //Debug.Log(input);
         bodyObj.MoveBody(move.x, move.z);
     }
 
     void Jump()
     {
-        if (playerInput.actions["Jump"].triggered)
+        if (playerInput.Player.Jump.triggered)
         {
-            //Debug.Log("Jump");
+            Debug.Log("Jump");
             bodyObj.Jump();
         }
     }
@@ -109,7 +136,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         //Switch Gun by Mouse ScrollWheel
         int index = gunObj.itemIndex;
 
-        if (playerInput.actions["ChangeWeapon"].triggered)
+        if (playerInput.Player.ChangeWeapon.triggered)
         {
             if (index >= massOfGunsLength - 1)
             {
@@ -120,7 +147,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
                 gunObj.Equip(index + 1);
 
             }
-
         }
        /* else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f)
         {
@@ -135,13 +161,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         //Synchronize switching weapons
         if (PV.IsMine)
         {
-            Hashtable hash = new Hashtable();
+            hash = new Hashtable();
             hash.Add("itemIndex", index);
             PhotonNetwork.SetPlayerCustomProperties(hash);
         }
 
         //Fire
-        if (playerInput.actions["Fire"].triggered)
+        if (playerInput.Player.Fire.triggered)
         {
             //Debug.Log("Fire");
             gunObj.Attack(index);
@@ -152,6 +178,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     {
         if (!PV.IsMine && targetPlayer == PV.Owner)
         {
+            Debug.Log("Какая то движуха");
             gunObj.Equip((int)changedProps["itemIndex"]);
         }
     }

@@ -19,7 +19,7 @@ public class PlayerBodyMovement : MonoBehaviour
     {
         if (PlayerGravityController.isGrounded)
         {
-           // Debug.Log(2);
+           Debug.Log(2);
             PlayerGravityController.velocity.y = Mathf.Sqrt(jumpHeight * -2f * PlayerGravityController.gravity);
         }
     }

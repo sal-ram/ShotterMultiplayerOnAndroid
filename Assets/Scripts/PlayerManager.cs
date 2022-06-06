@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using System.IO;
+using System;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -11,6 +12,13 @@ public class PlayerManager : MonoBehaviour
     GameObject controller;
 
     SpawnManager spawnManager;
+
+    /*public delegate void OnStatisticKillsUpdated(int deaths);
+    public event OnStatisticKillsUpdated onStatisticKillsUpdated;*/
+
+    public event Action<int> OnKillsUpdate;
+
+    public event Action<int> OnDeathsUpdate;
 
     public int player_kills { get; set; } = 0;
     public int player_deaths { get; set; } = 0;
@@ -53,10 +61,12 @@ public class PlayerManager : MonoBehaviour
     public void AddKill()
     {
         player_kills += 1;
+        OnKillsUpdate(player_kills);
     }
 
     public void AddDeath()
     {
         player_deaths += 1;
+        OnDeathsUpdate(player_deaths);
     }
 }

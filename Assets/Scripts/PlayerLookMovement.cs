@@ -15,6 +15,7 @@ public class PlayerLookMovement : MonoBehaviour
     }
     public void MoveLookByMouse(float vertical, float horizontal)
     {
+        //Debug.Log(vertical + " " + horizontal);
         Xrotation -= vertical * (float)0.3;
         Xrotation = Mathf.Clamp(Xrotation, -90f, 90f);
 

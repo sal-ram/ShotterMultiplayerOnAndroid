@@ -11,6 +11,8 @@ public class PlayerStatisticSystem : MonoBehaviourPunCallbacks
 
     Dictionary<Player, PlayerStatisticsItem> dictForPlayerAndStatistics = new Dictionary<Player, PlayerStatisticsItem>();
 
+    bool activeness;
+
     private void Start()
     {
         foreach (Player player in PhotonNetwork.PlayerList)
@@ -31,7 +33,12 @@ public class PlayerStatisticSystem : MonoBehaviourPunCallbacks
 
     private void AddPlayerStatistic(Player player)
     {
+       /* Debug.Log((int)player.CustomProperties["playerManager"]);
+        var playerManager = PhotonView.Find((int)player.CustomProperties["playerManager"]).GetComponent<PlayerManager>();*/
         var item = Instantiate(playerStatisticPrefab, transformParent);
+
+        /*item.playerManager = playerManager as PlayerManager;*/
+
         item.SetName(player.NickName);
         dictForPlayerAndStatistics.Add(player, item);
     }
@@ -41,4 +48,19 @@ public class PlayerStatisticSystem : MonoBehaviourPunCallbacks
         Destroy(dictForPlayerAndStatistics[player].gameObject);
         dictForPlayerAndStatistics.Remove(player);
     }
+
+   /* public void OnOrOff()
+    {
+        gameObject.SetActive(!activeness);
+    }
+
+    private void OnEnable()
+    {
+        activeness = true;
+    }
+
+    private void OnDisable()
+    {
+        activeness = false;
+    }*/
 }
