@@ -53,7 +53,7 @@ public class PlayerManager : MonoBehaviour
 
     public void Die()
     {
-        //AddDeath();
+        AddDeath();
         PhotonNetwork.Destroy(controller.gameObject);
         CreateController();
     }

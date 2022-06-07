@@ -61,7 +61,7 @@ public class @MultiplayerShooter : IInputActionCollection, IDisposable
                 {
                     ""name"": ""Scoreboard"",
                     ""type"": ""Button"",
-                    ""id"": ""46742621-58b6-469e-b484-71f85d00dd71"",
+                    ""id"": ""561698af-9184-4c0b-b0e8-2111cc864aed"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -301,22 +301,22 @@ public class @MultiplayerShooter : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""e34f07b1-066e-48e5-abac-b8810ae3320a"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""id"": ""36e1239c-0b72-4cbc-a1f6-2492489c7675"",
+                    ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Scoreboard"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""11acf851-3c32-41cf-ab89-446b0197790e"",
-                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""id"": ""857ff1e1-3666-4aa4-bf7e-53cab0e12f58"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Scoreboard"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false

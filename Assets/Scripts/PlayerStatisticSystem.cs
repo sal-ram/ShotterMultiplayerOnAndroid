@@ -17,6 +17,7 @@ public class PlayerStatisticSystem : MonoBehaviourPunCallbacks
     {
         foreach (Player player in PhotonNetwork.PlayerList)
         {
+            Debug.Log("Я первее!");
             AddPlayerStatistic(player);
         }
     }
@@ -33,11 +34,11 @@ public class PlayerStatisticSystem : MonoBehaviourPunCallbacks
 
     private void AddPlayerStatistic(Player player)
     {
-       // Debug.Log((int)player.CustomProperties["itemIndex"]);
-        //var playerManager = PhotonView.Find((int)player.CustomProperties["playerManager"]).GetComponent<PlayerManager>();
+        Debug.Log((int)player.CustomProperties["itemIndex"]);
+        var playerManager = PhotonView.Find((int)player.CustomProperties["playerManager"]).GetComponent<PlayerManager>();
         var item = Instantiate(playerStatisticPrefab, transformParent);
 
-        /*item.playerManager = playerManager as PlayerManager;*/
+        item.playerManager = playerManager;
 
         item.SetName(player.NickName);
         dictForPlayerAndStatistics.Add(player, item);

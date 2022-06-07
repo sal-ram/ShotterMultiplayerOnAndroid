@@ -26,8 +26,6 @@ public class SingleShotGun : Gun
         {
            if (hit.collider.gameObject.GetComponent<PlayerController>()?.currentHealth <= ((GunInfo)itemInfo).damage)
            {
-                //Debug.Log(hit.collider.gameObject.GetComponent<PlayerController>().currentHealth);
-
                 if (PV.IsMine)
                 {
                    transform.root.gameObject.GetComponent<PlayerController>().AddKill();

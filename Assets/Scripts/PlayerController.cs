@@ -31,8 +31,19 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     public float currentHealth { get; private set; } = maxHealth;
     private void Awake()
     {
+
         playerInput = new MultiplayerShooter();
         PV = GetComponent<PhotonView>();
+
+        playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
+
+        playerStatisticSystem = FindObjectOfType<PlayerStatisticSystem>();
+
+        hash = new Hashtable();
+
+        hash.Add("playerManager", (int)PV.InstantiationData[0]);
+
+        Debug.Log("Я первее!");
     }
 
     public override void OnEnable()
@@ -64,9 +75,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             //Destroy(GetComponentInChildren<Canvas>().gameObject);
         }
 
-        playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
+       /* playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
         
         playerStatisticSystem = FindObjectOfType<PlayerStatisticSystem>();
+
+        hash = new Hashtable();
+
+        hash.Add("playerManager", (int)PV.InstantiationData[0]);*/
 
         //hash = new Hashtable();
         //hash.Add("playerManager", (int)PV.InstantiationData[0]);
@@ -82,10 +97,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             Jump();
             GunFunctionality();
 
-            /*if (playerInput.actions["Scoreboard"].triggered)
+            if (gameObject.transform.position.y < -5)
             {
-                playerStatisticSystem.e
-            }*/
+                Die();
+            }
         }
     }
 
@@ -162,8 +177,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         //Synchronize switching weapons
         if (PV.IsMine)
         {
-            hash = new Hashtable();
-            hash.Add("index", index);
+            hash.Remove("itemIndex");
+            hash.Add("itemIndex", index);
             PhotonNetwork.SetPlayerCustomProperties(hash);
         }
 
@@ -177,6 +192,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
+        Debug.Log(targetPlayer.CustomProperties);
         if (!PV.IsMine && targetPlayer == PV.Owner)
         {
             gunObj.Equip((int)changedProps["index"]);
