@@ -48,6 +48,8 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void CreateRoom()
     {
+        RoomOptions options = new RoomOptions();
+        options.BroadcastPropsChangeToAll = true;
         if (string.IsNullOrEmpty(create_room_inputField.text))
         {
             return;

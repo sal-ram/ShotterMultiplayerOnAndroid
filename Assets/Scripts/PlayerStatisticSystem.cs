@@ -33,8 +33,8 @@ public class PlayerStatisticSystem : MonoBehaviourPunCallbacks
 
     private void AddPlayerStatistic(Player player)
     {
-       /* Debug.Log((int)player.CustomProperties["playerManager"]);
-        var playerManager = PhotonView.Find((int)player.CustomProperties["playerManager"]).GetComponent<PlayerManager>();*/
+       // Debug.Log((int)player.CustomProperties["itemIndex"]);
+        //var playerManager = PhotonView.Find((int)player.CustomProperties["playerManager"]).GetComponent<PlayerManager>();
         var item = Instantiate(playerStatisticPrefab, transformParent);
 
         /*item.playerManager = playerManager as PlayerManager;*/

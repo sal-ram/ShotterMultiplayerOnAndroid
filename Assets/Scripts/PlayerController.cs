@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using Photon.Pun;
 using Photon.Realtime;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
@@ -16,8 +15,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     private float inputVerticalRot;
     private float inputHorizontalRot;
 
-    Hashtable hash;
-
     [SerializeField] private PlayerBodyMovement bodyObj;
     [SerializeField] private PlayerLookMovement lookObj;
     [SerializeField] private PlayerWeapon gunObj;
@@ -27,6 +24,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     PlayerManager playerManager;
 
     PlayerStatisticSystem playerStatisticSystem;
+
+    Hashtable hash;
 
     const float maxHealth = 150f;
     public float currentHealth { get; private set; } = maxHealth;
@@ -38,11 +37,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     public override void OnEnable()
     {
+        base.OnEnable();
         playerInput.Enable();
     }
 
     public override void OnDisable()
     {
+        base.OnDisable();
         playerInput.Disable();
     }
 
@@ -162,7 +163,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         if (PV.IsMine)
         {
             hash = new Hashtable();
-            hash.Add("itemIndex", index);
+            hash.Add("index", index);
             PhotonNetwork.SetPlayerCustomProperties(hash);
         }
 
@@ -178,8 +179,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     {
         if (!PV.IsMine && targetPlayer == PV.Owner)
         {
-            Debug.Log("Какая то движуха");
-            gunObj.Equip((int)changedProps["itemIndex"]);
+            gunObj.Equip((int)changedProps["index"]);
         }
     }
 

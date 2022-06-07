@@ -6,7 +6,8 @@ public class PlayerLookMovement : MonoBehaviour
 {
     private float mouseSensivity = 50f;
     [SerializeField] private Transform bodyObj;
-   // [SerializeField] private Transform gunObj;
+    [SerializeField] private Transform gunObj;
+    // [SerializeField] private Transform gunObj;
 
     float Xrotation = 0f;
     private void Update()
@@ -28,7 +29,7 @@ public class PlayerLookMovement : MonoBehaviour
         Quaternion PlayerLookEulerRotation = Quaternion.Euler(Xrotation, 0f, 0f);
 
         transform.localRotation = PlayerLookEulerRotation;
-        //gunObj.localRotation = PlayerLookEulerRotation;
+        gunObj.localRotation = PlayerLookEulerRotation;
 
         bodyObj.Rotate(Vector3.up * horizontal * mouseSensivity * Time.deltaTime);
     }
