@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerLookMovement : MonoBehaviour
 {
-    private float mouseSensivity = 50f;
+    private float mouseSensivity = 200f;
     [SerializeField] private Transform bodyObj;
     [SerializeField] private Transform gunObj;
     // [SerializeField] private Transform gunObj;
@@ -17,7 +17,7 @@ public class PlayerLookMovement : MonoBehaviour
     public void MoveLookByMouse(float vertical, float horizontal)
     {
         //Debug.Log(vertical + " " + horizontal);
-        Xrotation -= vertical * (float)0.3;
+        Xrotation -= vertical * (float)1.5;
         Xrotation = Mathf.Clamp(Xrotation, -90f, 90f);
 
         /*if (vertical > 0)

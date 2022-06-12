@@ -15,8 +15,8 @@ public class PlayerStatisticsItem : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        playerManager.OnKillsUpdate += UpdateKills;
-        playerManager.OnDeathsUpdate += UpdateDeaths;
+       /* playerManager.OnKillsUpdate += UpdateKills;
+        playerManager.OnDeathsUpdate += UpdateDeaths;*/
     }
 
     public void SetName(string name)
@@ -24,13 +24,13 @@ public class PlayerStatisticsItem : MonoBehaviour
         nickname_text.text = name;
     }
 
-    public void UpdateKills(int new_kills)
+    public void SetKills(int kills_new)
     {
-        kills.text = new_kills.ToString();
+        kills.text = kills_new.ToString();
     }
 
-    public void UpdateDeaths(int newdeath)
+    public void SetDeaths(int deaths_new)
     {
-        deaths.text = newdeath.ToString();
+        deaths.text = deaths_new.ToString();
     }
 }

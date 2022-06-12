@@ -22,9 +22,25 @@ public class GameManager : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-        MenuManager.Instance.OpenMenu("loading");
+        /*MenuManager.Instance.OpenMenu("loading");
         Debug.Log("Connecting to MasterServer");
-        PhotonNetwork.ConnectUsingSettings();
+        PhotonNetwork.ConnectUsingSettings();*/
+
+        MenuManager.Instance.OpenMenu("mainMenu");
+        PhotonNetwork.JoinLobby();
+        PhotonNetwork.AutomaticallySyncScene = true;
+        PhotonNetwork.NickName = "Player" + Random.Range(0, 1000);
+
+        if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("deaths") && PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("kills"))
+        {
+            PhotonNetwork.LocalPlayer.CustomProperties["deaths"] = 0;
+            PhotonNetwork.LocalPlayer.CustomProperties["kills"] = 0;
+        }
+        else
+        {
+            PhotonNetwork.LocalPlayer.CustomProperties.Add("deaths", 0);
+            PhotonNetwork.LocalPlayer.CustomProperties.Add("kills", 0);
+        }
     }
 
     private void Awake()
@@ -32,14 +48,17 @@ public class GameManager : MonoBehaviourPunCallbacks
         Instance = this;
     }
 
-    public override void OnConnectedToMaster()
+   /* public override void OnConnectedToMaster()
     {   
         Debug.Log("Connected to MasterServer");
         MenuManager.Instance.OpenMenu("mainMenu");
         PhotonNetwork.JoinLobby();
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.NickName = "Player" + Random.Range(0, 1000);
-    }
+
+        PhotonNetwork.LocalPlayer.CustomProperties.Add("deaths", 0);
+        PhotonNetwork.LocalPlayer.CustomProperties.Add("kills", 0);
+    }*/
 
     public override void OnJoinedLobby()
     {
@@ -86,7 +105,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void StartGame()
     {
-        PhotonNetwork.LoadLevel(1);
+        PhotonNetwork.LoadLevel(2);
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)

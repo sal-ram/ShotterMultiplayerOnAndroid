@@ -6,5 +6,6 @@ using UnityEngine;
 public class GunInfo : ItemInfo
 {
     public float damage;
+    public AudioClip soundShot;
 }
 

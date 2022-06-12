@@ -53,20 +53,20 @@ public class PlayerManager : MonoBehaviour
 
     public void Die()
     {
-        AddDeath();
+       // AddDeath();
         PhotonNetwork.Destroy(controller.gameObject);
         CreateController();
     }
 
-    public void AddKill()
+    /*public void AddKill()
     {
         player_kills += 1;
         OnKillsUpdate(player_kills);
-    }
+    }*/
 
-    public void AddDeath()
+    /*public void AddDeath()
     {
         player_deaths += 1;
         OnDeathsUpdate(player_deaths);
-    }
+    }*/
 }

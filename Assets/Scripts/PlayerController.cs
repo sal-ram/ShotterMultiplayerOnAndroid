@@ -27,21 +27,24 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     Hashtable hash;
 
+    public int playerId { get; private set; }
+
     const float maxHealth = 150f;
     public float currentHealth { get; private set; } = maxHealth;
     private void Awake()
     {
-
         playerInput = new MultiplayerShooter();
         PV = GetComponent<PhotonView>();
 
         playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
 
+        playerId = PV.ViewID;
+
         playerStatisticSystem = FindObjectOfType<PlayerStatisticSystem>();
 
         hash = new Hashtable();
 
-        hash.Add("playerManager", (int)PV.InstantiationData[0]);
+        //hash.Add("playerManager", (int)PV.InstantiationData[0]);
 
         Debug.Log("Я первее!");
     }
@@ -90,16 +93,19 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     // Update is called once per frame
     void Update()
     {
-        if (PV.IsMine)
+        if (!Timer.IsSessionEnd)
         {
-            Move();
-            Look();
-            Jump();
-            GunFunctionality();
-
-            if (gameObject.transform.position.y < -5)
+            if (PV.IsMine)
             {
-                Die();
+                Move();
+                Look();
+                Jump();
+                GunFunctionality();
+
+                if (gameObject.transform.position.y < -5)
+                {
+                    Die();
+                }
             }
         }
     }
@@ -192,20 +198,23 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
-        Debug.Log(targetPlayer.CustomProperties);
+       // Debug.Log(targetPlayer.CustomProperties);
         if (!PV.IsMine && targetPlayer == PV.Owner)
         {
-            gunObj.Equip((int)changedProps["index"]);
+            if (changedProps.ContainsKey("itemIndex"))
+            {
+                gunObj.Equip((int)changedProps["itemIndex"]);
+            }
         }
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, int playerId)
     {
-        PV.RPC("RPC_TakeDamage", RpcTarget.All, damage);
+        PV.RPC("RPC_TakeDamage", RpcTarget.All, new object[] { damage, playerId });
     }
 
     [PunRPC]
-    void RPC_TakeDamage(float damage)
+    void RPC_TakeDamage(float damage, int playerId)
     {
         if (!PV.IsMine)
             return;
@@ -213,6 +222,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
         if (currentHealth <= 0)
         {
+            Debug.Log(playerId);
+            var killer = PhotonView.Find(playerId).GetComponent<PlayerController>();
+            killer.AddKill();
             Die();
         }
     }
@@ -224,11 +236,29 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     void Die()
     {
+        int deaths = (int) PhotonNetwork.LocalPlayer.CustomProperties["deaths"];
+        deaths += 1;
+        PhotonNetwork.LocalPlayer.CustomProperties["deaths"] = deaths;
+
+        var hash = new Hashtable();
+
+        hash.Add("deaths", deaths);
+
+        PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+
         playerManager.Die();
     }
 
     public void AddKill()
     {
-        playerManager.AddKill();
+        int kills = (int)PhotonNetwork.LocalPlayer.CustomProperties["kills"];
+        kills += 1;
+        PhotonNetwork.LocalPlayer.CustomProperties["kills"] = kills;
+
+        var hash = new Hashtable();
+
+        hash.Add("kills", kills);
+
+        PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
     }
 }

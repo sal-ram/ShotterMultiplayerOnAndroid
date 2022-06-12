@@ -13,8 +13,29 @@ public class PlayerStatisticSystem : MonoBehaviourPunCallbacks
 
     bool activeness;
 
-    private void Start()
+    /* private void Start()
+     {
+         foreach (Player player in PhotonNetwork.PlayerList)
+         {
+             Debug.Log("Я первее!");
+             AddPlayerStatistic(player);
+         }
+     }
+
+     public override void OnPlayerEnteredRoom(Player newPlayer)
+     {
+         AddPlayerStatistic(newPlayer);
+     }
+
+     public override void OnPlayerLeftRoom(Player otherPlayer)
+     {
+         RemovePlayerStatistic(otherPlayer);
+     }*/
+
+    public override void OnEnable()
     {
+        base.OnEnable();
+
         foreach (Player player in PhotonNetwork.PlayerList)
         {
             Debug.Log("Я первее!");
@@ -22,25 +43,19 @@ public class PlayerStatisticSystem : MonoBehaviourPunCallbacks
         }
     }
 
-    public override void OnPlayerEnteredRoom(Player newPlayer)
-    {
-        AddPlayerStatistic(newPlayer);
-    }
-
-    public override void OnPlayerLeftRoom(Player otherPlayer)
-    {
-        RemovePlayerStatistic(otherPlayer);
-    }
-
     private void AddPlayerStatistic(Player player)
     {
-        Debug.Log((int)player.CustomProperties["itemIndex"]);
-        var playerManager = PhotonView.Find((int)player.CustomProperties["playerManager"]).GetComponent<PlayerManager>();
+        Debug.Log(player.NickName + " " + " " +  (int)player.CustomProperties["deaths"]);
+        Debug.Log(player.NickName + " " + " " + (int)player.CustomProperties["kills"]);
+        //var playerManager = PhotonView.Find((int)player.CustomProperties["playerManager"]).GetComponent<PlayerManager>();
         var item = Instantiate(playerStatisticPrefab, transformParent);
 
-        item.playerManager = playerManager;
+        //item.playerManager = playerManager;
 
         item.SetName(player.NickName);
+        item.SetDeaths((int) player.CustomProperties["deaths"]);
+        item.SetKills((int)player.CustomProperties["kills"]);
+
         dictForPlayerAndStatistics.Add(player, item);
     }
 
