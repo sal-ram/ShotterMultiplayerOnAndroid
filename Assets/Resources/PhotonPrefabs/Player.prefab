@@ -334,7 +334,7 @@ Transform:
   m_GameObject: {fileID: 6119584102861899170}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.72, y: 5.19, z: 2.58}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4012245382201170215}
@@ -357,7 +357,7 @@ CharacterController:
   m_Height: 2
   m_Radius: 0.5
   m_SlopeLimit: 45
-  m_StepOffset: 0.3
+  m_StepOffset: 3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
@@ -703,6 +703,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d04081ba71d64249b908934ed53ccd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mouseSensivityHoriz: 125
+  mouseSensivityVertic: 2.5
   bodyObj: {fileID: 6119584102861899172}
   gunObj: {fileID: 5930565044242507648}
 --- !u!114 &3780037144709195163

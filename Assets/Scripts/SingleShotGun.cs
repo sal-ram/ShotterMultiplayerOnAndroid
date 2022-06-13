@@ -51,7 +51,7 @@ public class SingleShotGun : Gun
 
         if (colliders.Length != 0)
         {
-            GameObject bulletImp =  Instantiate(bulletImpact, hitPosition, Quaternion.LookRotation(hitNormal));
+            GameObject bulletImp =  Instantiate(bulletImpact, hitPosition + hitNormal * 0.01f, Quaternion.LookRotation(hitNormal));
             bulletImp.transform.SetParent(colliders[0].transform);
         }
     }

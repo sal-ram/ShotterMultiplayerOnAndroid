@@ -102,7 +102,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
                 Jump();
                 GunFunctionality();
 
-                if (gameObject.transform.position.y < -5)
+                if (gameObject.transform.position.y < -13)
                 {
                     Die();
                 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerBodyMovement : MonoBehaviour
 {
-    private float speedMovement = 15f;
+    private float speedMovement = 30f;
     public CharacterController controller;
     float jumpHeight = 1f;
 

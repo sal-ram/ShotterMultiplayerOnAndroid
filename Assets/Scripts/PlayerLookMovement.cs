@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerLookMovement : MonoBehaviour
 {
-    private float mouseSensivity = 200f;
+    [SerializeField] private float mouseSensivityHoriz = 125f;
+    [SerializeField] private float mouseSensivityVertic = 2.5f;
     [SerializeField] private Transform bodyObj;
     [SerializeField] private Transform gunObj;
     // [SerializeField] private Transform gunObj;
@@ -17,7 +18,7 @@ public class PlayerLookMovement : MonoBehaviour
     public void MoveLookByMouse(float vertical, float horizontal)
     {
         //Debug.Log(vertical + " " + horizontal);
-        Xrotation -= vertical * (float)1.5;
+        Xrotation -= vertical;
         Xrotation = Mathf.Clamp(Xrotation, -90f, 90f);
 
         /*if (vertical > 0)
@@ -26,11 +27,11 @@ public class PlayerLookMovement : MonoBehaviour
             horizontal = -1;
         */
 
-        Quaternion PlayerLookEulerRotation = Quaternion.Euler(Xrotation, 0f, 0f);
+        Quaternion PlayerLookEulerRotation = Quaternion.Euler(Xrotation * mouseSensivityVertic, 0f, 0f);
 
         transform.localRotation = PlayerLookEulerRotation;
         gunObj.localRotation = PlayerLookEulerRotation;
 
-        bodyObj.Rotate(Vector3.up * horizontal * mouseSensivity * Time.deltaTime);
+        bodyObj.Rotate(Vector3.up * horizontal * mouseSensivityHoriz * Time.deltaTime);
     }
 }

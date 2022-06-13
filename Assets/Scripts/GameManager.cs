@@ -150,4 +150,10 @@ public class GameManager : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinRoom(info.Name);
         MenuManager.Instance.OpenMenu("loading");
     }
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
+
 }
